@@ -1,4 +1,3 @@
-
 # Simulations and Documentation
 
 
@@ -23,4 +22,3 @@ RProject used in RStudio.
 ### README.org
 
 ORG-File in EMACS, creates README.md.
-
