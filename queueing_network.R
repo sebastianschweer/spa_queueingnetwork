@@ -157,7 +157,9 @@ represent_single_customer <- function(enter_node, simulation, max_length){
   return(represent)
 }
 
-test <- queueing_network_poi_geom(100,500,p_12 = 0.9,
+test <- queueing_network_poi_geom(10000,
+                                  50000,
+                                  p_12 = 0.9,
                                   p_21 = 0.1,
                                   G_1 = 0.1,
                                   G_2 = 0.1,
