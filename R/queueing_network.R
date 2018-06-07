@@ -85,7 +85,6 @@ queueing_network_poi_geom <-
 return(observable_data)
   }
 
-### TODO: Else Case nochmal genau betrachten, scheint unplausibel
 fill_vector_with_zeros <- function(vector, lead, length){
   if((length - length(vector) - lead) > 0){
   result =
@@ -94,12 +93,14 @@ fill_vector_with_zeros <- function(vector, lead, length){
       rep(0, (length - length(vector) - lead)))
   }
   else {
-    result = rep(0,length)
+    result = c(rep(0, lead), vector)
+    result = head(result, length)
   }
-  return(result)
+  return(
+    suppressWarnings(
+    as.numeric(result)
+    ))
   }
-
-#test <- queueing_network_poi_geom(1000, 5000, 0.1, 0.2, 3, 2, 0.7, 0.8)
 
 simulate_single_customer <- function(enter_node, p_12, p_21, G_1, G_2){
   number_of_steps = rgeom(1, (1-p_12*p_21))
@@ -118,9 +119,6 @@ simulate_single_customer <- function(enter_node, p_12, p_21, G_1, G_2){
   service_times[idx %% 2 != 0] <- service_times_a[ idx %% 2 != 0] + 1
   return(service_times)
 }
-
-
-simulate_single_customer(1, 0.9, 0.9, 0.02, 0.8)
 
 customers_arrival <- function(arrivals, enter_node, p_12, p_21, G_1, G_2){
   list_arrivals = sapply(rep(enter_node,arrivals), simplify = FALSE, simulate_single_customer,
@@ -153,21 +151,8 @@ represent_single_customer <- function(enter_node, simulation, max_length){
     }
   }
   represent = rep(NA, max_length)
+  if(sum(simulation) <= max_length){
   represent[sum(simulation)] = exit_node
+  }
   return(represent)
 }
-
-test <- queueing_network_poi_geom(10000,
-                                  50000,
-                                  p_12 = 0.9,
-                                  p_21 = 0.1,
-                                  G_1 = 0.1,
-                                  G_2 = 0.1,
-                                  lambda_1 = 12,
-                                  lambda_2 = 1)
-customers_arrival(arrivals = 2,
-                  enter_node = 1,
-                  p_12 = 0.9,
-                  p_21 = 0.1,
-                  G_1 = 0.1,
-                  G_2 = 0.1)
