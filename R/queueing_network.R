@@ -26,7 +26,8 @@ queueing_network_poi_geom <-
            lambda_1,
            lambda_2,
            G_1,
-           G_2){
+           G_2,
+           progress = FALSE){
     
     ### Initiate the observations with 0
     observable_data <- 
@@ -37,7 +38,7 @@ queueing_network_poi_geom <-
     
     ### Loop over each time point:
     ### 
-    progressbar <- txtProgressBar(style = 3)
+    if(progress){progressbar <- txtProgressBar(style = 3)}
     for(time in c(1:(n_obs + burn_in))){
       
       arrival_1 = rpois(1, lambda = lambda_1)
@@ -93,10 +94,10 @@ queueing_network_poi_geom <-
       observable_data$arrival_2[time] <-
         observable_data$arrival_2[time] + arrival_2
       
-      setTxtProgressBar(progressbar, time/(n_obs + burn_in))
+      if(progress){setTxtProgressBar(progressbar, time/(n_obs + burn_in))}
     }
     
-    
+    observable_data <- tail(observable_data, n_obs)
     return(observable_data)
   }
 
@@ -119,13 +120,15 @@ fill_vector_with_zeros <- function(vector, lead, length){
 
 simulate_single_customer <- function(enter_node, p_12, p_21, G_1, G_2){
   if(p_12 < 1 & p_12 >= 0 & p_21 < 1 & p_12 >= 0 & G_1 < 1 & G_1 >= 0 &  G_2 < 1 & G_2 >= 0){
-    number_of_steps = rgeom(1, (1-p_12*p_21))
+    
     if(enter_node == 1){
       service_time_par_a = G_1
       service_time_par_b = G_2
+      number_of_steps = rgeom(1, (1 - p_12*p_21))*2 + rbinom(1,1,p_12)
     } else {
       service_time_par_a = G_2
       service_time_par_b = G_1
+      number_of_steps = rgeom(1, (1 - p_12*p_21))*2 + rbinom(1,1,p_21)
     }
     service_times <- rep(NA, number_of_steps + 1)
     idx <- c(1:(number_of_steps +1))
