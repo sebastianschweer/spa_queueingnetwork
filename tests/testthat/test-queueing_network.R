@@ -20,9 +20,9 @@ test_that("Result has predefined number of rows", {
 })
 
 test_that("Number of exiting customers is almost that of entering customers", {
-  qn_1 <- queueing_network_poi_geom(10,10,0.3, 0.4, 2, 1, 0.6, 0.7)
+  qn_1 <- queueing_network_poi_geom(100,10,0.3, 0.4, 2, 1, 0.6, 0.7)
   qn_2 <- queueing_network_poi_geom(100,10,0.6, 0.1, 12, 1, 0.9, 0.7)
-  qn_3 <- queueing_network_poi_geom(10,100,0.1, 0.1, 0.06, 2, 0.1, 0.3)
+  qn_3 <- queueing_network_poi_geom(100,100,0.1, 0.1, 0.06, 2, 0.1, 0.3)
   
   expect_equal(sum(qn_1$arrival_1 + qn_1$arrival_2) > 0.7* sum(qn_1$departure_1 + qn_1$departure_2), TRUE)
   expect_equal(sum(qn_2$arrival_1 + qn_2$arrival_2) > 0.7* sum(qn_2$departure_1 + qn_2$departure_2), TRUE)
@@ -30,18 +30,18 @@ test_that("Number of exiting customers is almost that of entering customers", {
   })
 
 test_that("Number of arriving customers is Poisson distributed", {
-  qn_1 <- queueing_network_poi_geom(10,10,0.3, 0.4, 2, 1, 0.6, 0.7)
-  qn_2 <- queueing_network_poi_geom(10,100,0.6, 0.1, 12, 1, 0.9, 0.7)
+  qn_1 <- queueing_network_poi_geom(100,10,0.3, 0.4, 2, 1, 0.6, 0.7)
+  qn_2 <- queueing_network_poi_geom(1000,100,0.6, 0.1, 12, 1, 0.9, 0.7)
   qn_3 <- queueing_network_poi_geom(100,10,0.1, 0.1, 0.06, 2, 0.1, 0.3)
   
-  expect_equal(sum(qn_1$arrival_1) >  0.5*(10)*2, TRUE)
-  expect_equal(sum(qn_1$arrival_1) <  2*(10)*2, TRUE)
-  expect_equal(sum(qn_1$arrival_2) >  0.5*(10)*1, TRUE)
-  expect_equal(sum(qn_1$arrival_2) <  2*(10)*1, TRUE)
-  expect_equal(sum(qn_2$arrival_1) <  2*(10)*12, TRUE)
-  expect_equal(sum(qn_2$arrival_1) >  0.5*(10)*12, TRUE)
-  expect_equal(sum(qn_2$arrival_2) <  2*(10)*1, TRUE)
-  expect_equal(sum(qn_2$arrival_2) >  0.5*(10)*1, TRUE)
+  expect_equal(sum(qn_1$arrival_1) >  0.5*(100)*2, TRUE)
+  expect_equal(sum(qn_1$arrival_1) <  2*(100)*2, TRUE)
+  expect_equal(sum(qn_1$arrival_2) >  0.5*(100)*1, TRUE)
+  expect_equal(sum(qn_1$arrival_2) <  2*(100)*1, TRUE)
+  expect_equal(sum(qn_2$arrival_1) <  2*(1000)*12, TRUE)
+  expect_equal(sum(qn_2$arrival_1) >  0.5*(1000)*12, TRUE)
+  expect_equal(sum(qn_2$arrival_2) <  2*(1000)*1, TRUE)
+  expect_equal(sum(qn_2$arrival_2) >  0.5*(1000)*1, TRUE)
   expect_equal(sum(qn_3$arrival_1) >  0.5*(100)*0.06, TRUE)
   expect_equal(sum(qn_3$arrival_1) <  2*(100)*0.06, TRUE)
   expect_equal(sum(qn_3$arrival_2) >  0.5*(100)*2, TRUE)
