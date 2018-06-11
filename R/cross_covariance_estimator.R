@@ -36,20 +36,22 @@ cross_covariance <- function(data, node_1, node_2, lag, nobs){
 deconvoluting_alpha <- function(number_of_steps, alpha_1, alpha_2, p_12, p_21){
   M_n = min(which(alpha_1 > 0))
   if(is.finite(M_n)){
-    if(number_of_steps > 1){
-      v_n = numeric(length = number_of_steps)
+    length_1 = length(alpha_1) - M_n + 1
+    length_2 = length(alpha_2) - M_n 
+    max_num_steps = min(length_1, length_2, number_of_steps)
+    if(max_num_steps > 1){
+      v_n = numeric(length = max_num_steps)
       v_n[1] = (1 - p_12)* alpha_2[M_n + 1] / (alpha_1[M_n] * (1 - p_21) * p_12)
       
-      for(idx in c(2:number_of_steps)){
+      for(idx in c(2:max_num_steps)){
         alpha_1_k = alpha_1[(M_n + idx -1):(M_n + 1)]
         v_n[idx] = (1 - p_12)* alpha_2[M_n + idx] / (alpha_1[M_n] * (1 - p_21) * p_12) - (sum(alpha_1_k*v_n[1:(idx-1)]))/alpha_1[M_n]
       }
-      
+      return(v_n)
     } else {
-      message("At least 2 steps need to be estimated")    
+      message("Not enough data points for deconvolution")    
       }
   } else {
     message("Alpha Estimator consists of 0 values")
   }
-  v_n = numeric(length = number_of_steps)
 }
