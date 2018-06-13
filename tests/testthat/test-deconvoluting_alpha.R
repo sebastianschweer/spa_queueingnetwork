@@ -25,4 +25,5 @@ test_that("Result is Correct", {
   expect_equal(deconvoluting_alpha(2, alpha_1[1:2], alpha_2[1:3], p_12 = 0.5, p_21 = 0.5), c(0,1))
   expect_equal(deconvoluting_alpha(2, alpha_1[1:2], alpha_2[1:3], p_12 = 0.7, p_21 = 0.5), c(0,0.1*0.3/(0.5*0.7*0.2)))
   expect_equal(deconvoluting_alpha(2, alpha_1[1:2], c(1,1,1), p_12 = 0.5, p_21 = 0.5), c(10,-5))
+  expect_equal(deconvoluting_alpha(2, c(2,0.3), c(1,1,1), p_12 = 0.5, p_21 = 0.5), c(1,0.85))
 })
