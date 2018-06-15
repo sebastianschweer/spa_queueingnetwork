@@ -1,0 +1,21 @@
+simulation_estimation <- function(max_lag, p_12, p_21, ...){
+  
+  data = data <- queueing_network_poi_geom(p_12 = p_12, p_21 = p_21, ...)
+  
+  alpha_12_hat = sapply(c(1:max_lag), 
+                         queueingnetworkR:::cross_covariance, 
+                         data = data, node_1 = 1, node_2 = 2, nobs = NULL)
+  alpha_11_hat = sapply(c(1:max_lag),
+                         queueingnetworkR:::cross_covariance, 
+                         data = data, node_1 = 1, node_2 = 1, nobs = NULL)
+  g_2_est = deconvoluting_alpha(max_lag,
+                                alpha_1 = alpha_11_hat,
+                                alpha_2 = alpha_12_hat,
+                                p_12 = p_12,
+                                p_21 = p_21)
+  return(g_2_est)
+}
+  
+
+
+#simulation_estimation(10, 0.4, 0.3, n_obs = 100000, burn_in = 10000, lambda_1 = 3, lambda_2 = 2, G_1 = 0.3, G_2 = 0.9, progress = TRUE)

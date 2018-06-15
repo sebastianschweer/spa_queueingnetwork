@@ -24,3 +24,11 @@ test_that("Estimator is 0 if Observations insufficient", {
   expect_equal(cross_covariance(data, 1, 2, 2, 1), 0)
   expect_equal(cross_covariance(data, 1, 2, 5, NULL), 0)
 })
+
+test_that("Estimator is correct", {
+  expect_equal(cross_covariance(data, 1, 2, 3, 4),1/4*0 - 1/4*1/4*17 +1/4*1/4*1/4*7.8)
+  expect_equal(cross_covariance(data, 1, 1, 3, 4),1/4*0 - 1/4*0*1/4*4 - 1/4*1/4*0 +1/4*1/4*1*1/4*4)
+  expect_equal(cross_covariance(data, 1, 1, 2, 4),1/4*0 - 1/4*0*1/4*4 - 1/4*1/4*2 +2/4*1/4*1*1/4*4)
+  expect_equal(cross_covariance(data, 1, 1, 1, 4),1/4*0 - 1/4*1*1/4*4 - 1/4*1/4*3 +3/4*1/4*1*1/4*4)
+  expect_equal(cross_covariance(data, 1, 2, 2, 4),1/4*0 - 1/4*1/4*16.8 +2/4*1/4*1/4*7.8)
+})

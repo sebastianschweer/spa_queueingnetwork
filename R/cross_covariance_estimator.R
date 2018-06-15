@@ -17,14 +17,14 @@ cross_covariance <- function(data, node_1, node_2, lag, nobs){
     if(node_2 == 1){
       departure = data$departure_1
     } else if (node_2 ==2){
-      departure = data$departure_1
+      departure = data$departure_2
     } else {
       message("Departure node not contained in the model")
     }
     arrival_k   = head(arrival, (nobs - lag))
     departure_k = tail(departure, (nobs - lag))
     ### Following formula (3) in Schweer/Wichelhaus
-    estimator = 1/nobs*(sum(arrival_k*departure_k) - sum(arrival_k)*mean(departure) - sum(departure_k)*mean(arrival) + mean(arrival)*(departure))
+    estimator = 1/nobs*(sum(arrival_k*departure_k)) - 1/nobs*sum(arrival_k)*mean(departure) - 1/nobs*sum(departure_k)*mean(arrival) + (nobs - lag)/nobs*mean(arrival)*mean(departure)
   } else {
     estimator = 0
   }
