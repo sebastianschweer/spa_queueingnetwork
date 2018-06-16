@@ -9,7 +9,7 @@ cross_covariance <- function(data, node_1, node_2, lag, nobs){
     if(node_1 == 1){
       arrival = data$arrival_1
     } else if (node_1 ==2){
-      arrival = data$arrival_1
+      arrival = data$arrival_2
     } else {
       message("Arrival node not contained in the model")
     }

@@ -124,11 +124,13 @@ simulate_single_customer <- function(enter_node, p_12, p_21, G_1, G_2){
     if(enter_node == 1){
       service_time_par_a = G_1
       service_time_par_b = G_2
-      number_of_steps = rgeom(1, (1 - p_12*p_21))*2 + rbinom(1,1,p_12)
+      # Probability of Routing: see Edelmann/Wichelhaus, p. 793
+      number_of_steps = rgeom(1, (1 - p_12*p_21))*2 + rbinom(1,1,(1 - p_21)*p_12/(1-p_12*p_21))
     } else {
       service_time_par_a = G_2
       service_time_par_b = G_1
-      number_of_steps = rgeom(1, (1 - p_12*p_21))*2 + rbinom(1,1,p_21)
+     # Probability of Routing: see Edelmann/Wichelhaus, p. 793
+      number_of_steps = rgeom(1, (1 - p_12*p_21))*2 + rbinom(1,1, (1 - p_12)*p_21/(1-p_12*p_21))  
     }
     service_times <- rep(NA, number_of_steps + 1)
     idx <- c(1:(number_of_steps +1))
