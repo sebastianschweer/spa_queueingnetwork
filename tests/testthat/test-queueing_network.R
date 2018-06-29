@@ -48,20 +48,18 @@ test_that("Number of arriving customers is Poisson distributed", {
   expect_equal(sum(qn_3$arrival_2) <  2*(100)*2, TRUE)
 })
 
+p_12 = 0.1
+p_21 = 0.2
+lambda_1 = 3
+lambda_2 = 1
+G_1 = 0.3
+G_2 = 0.2
+
+qn_1 <- queueing_network_poi_geom(10000, 1000, p_12 = p_12, p_21 = p_21,
+                                  lambda_1 = lambda_1, lambda_2 = lambda_2, 
+                                  G_1 = G_1, G_2 = G_2)
 
 test_that("Lemma 1 in Wichelhaus, Edelmann is satisfied", {
-  p_12 = 0.1
-  p_21 = 0.2
-  lambda_1 = 3
-  lambda_2 = 1
-  G_1 = 0.3
-  G_2 = 0.2
-  
-  qn_1 <- queueing_network_poi_geom(10000, 1000, p_12 = p_12, p_21 = p_21,
-                                    lambda_1 = lambda_1, lambda_2 = lambda_2, 
-                                    G_1 = G_1, G_2 = G_2)
-  
-  
   expect_equal(sum(qn_1$departure_1) > 0.5*(1-p_12)/(1-p_12*p_21)*(sum(qn_1$arrival_1) + p_21*sum(qn_1$arrival_2)), TRUE)
   expect_equal(sum(qn_1$departure_1) < 1.5*(1-p_12)/(1-p_12*p_21)*(sum(qn_1$arrival_1) + p_21*sum(qn_1$arrival_2)), TRUE)
   expect_equal(sum(qn_1$departure_1) > 0.8*(1-p_12)/(1-p_12*p_21)*(sum(qn_1$arrival_1) + p_21*sum(qn_1$arrival_2)), TRUE)
