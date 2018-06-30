@@ -86,8 +86,6 @@ test_that("Cross-Covariance satisfies Lemma 6, Edelmann/Wichelhaus for k = 0", {
   
 })
 
-
-
 test_that("Cross-Covariance satisfies Lemma 6, Edelmann/Wichelhaus for k = 1", {
   expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 1, lag = 1, nobs = NULL) < -0.05 + lambda_1*G_1*(1 - p_12)/(1 - p_12*p_21), FALSE)
   expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 1, lag = 1, nobs = NULL) >  0.05 + lambda_1*G_1*(1 - p_12)/(1 - p_12*p_21), FALSE)
@@ -100,6 +98,26 @@ test_that("Cross-Covariance satisfies Lemma 6, Edelmann/Wichelhaus for k = 1", {
   
 })
 
+test_that("Cross-Covariance satisfies Lemma 6, Edelmann/Wichelhaus for k = 2", {
+  expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 1, lag = 2, nobs = NULL) < -0.05 + lambda_1*G_1*(1-G_1)*(1 - p_12)/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 1, lag = 2, nobs = NULL) >  0.05 + lambda_1*G_1*(1-G_1)*(1 - p_12)/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 2, lag = 2, nobs = NULL) < -0.05 + lambda_1*G_1*G_2*(1 - p_21)*p_12/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 2, lag = 2, nobs = NULL) >  0.05 + lambda_1*G_1*G_2*(1 - p_21)*p_12/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 2, node_2 = 1, lag = 2, nobs = NULL) < -0.05 + lambda_2*G_1*G_2*(1 - p_12)*p_21/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 2, node_2 = 1, lag = 2, nobs = NULL) >  0.05 + lambda_2*G_1*G_2*(1 - p_12)*p_21/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 2, node_2 = 2, lag = 2, nobs = NULL) < -0.05 + lambda_2*G_2*(1-G_2)*(1 - p_21)/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 2, node_2 = 2, lag = 2, nobs = NULL) >  0.05 + lambda_2*G_2*(1-G_2)*(1 - p_21)/(1 - p_12*p_21), FALSE)
+  
+})
+
+
+alpha_1_1 = queueingnetworkR:::cross_covariance(qn_1, node_1 = 1, node_2 = 1, lag = 1, nobs = NULL) 
+alpha_2_2 = queueingnetworkR:::cross_covariance(qn_1, node_1 = 1, node_2 = 2, lag = 2, nobs = NULL) 
+
+test_that("Cross-Covariance estimator yields expected result for k = 1", {
+  expect_equal((1-p_12)*alpha_2_2/(alpha_1_1*(1-p_21)*p_12) - G_2 < 0.05, TRUE)
+  expect_equal((1-p_12)*alpha_2_2/(alpha_1_1*(1-p_21)*p_12) - G_2 > -0.05, TRUE)
+})
 
 
 
@@ -128,8 +146,6 @@ test_that("Cross-Covariance satsifies Lemma 6, Edelmann/Wichelhaus for k = 0", {
   
 })
 
-
-
 test_that("Cross-Covariance satsifies Lemma 6, Edelmann/Wichelhaus for k = 1", {
   expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 1, lag = 1, nobs = NULL) < -0.05 + lambda_1*G_1*(1 - p_12)/(1 - p_12*p_21), FALSE)
   expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 1, lag = 1, nobs = NULL) >  0.05 + lambda_1*G_1*(1 - p_12)/(1 - p_12*p_21), FALSE)
@@ -140,4 +156,25 @@ test_that("Cross-Covariance satsifies Lemma 6, Edelmann/Wichelhaus for k = 1", {
   expect_equal(cross_covariance(qn_1, node_1 = 2, node_2 = 2, lag = 1, nobs = NULL) < -0.05 + lambda_2*G_2*(1 - p_21)/(1 - p_12*p_21), FALSE)
   expect_equal(cross_covariance(qn_1, node_1 = 2, node_2 = 2, lag = 1, nobs = NULL) >  0.05 + lambda_2*G_2*(1 - p_21)/(1 - p_12*p_21), FALSE)
   
+})
+
+test_that("Cross-Covariance satisfies Lemma 6, Edelmann/Wichelhaus for k = 2", {
+  expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 1, lag = 2, nobs = NULL) < -0.05 + lambda_1*G_1*(1-G_1)*(1 - p_12)/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 1, lag = 2, nobs = NULL) >  0.05 + lambda_1*G_1*(1-G_1)*(1 - p_12)/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 2, lag = 2, nobs = NULL) < -0.05 + lambda_1*G_1*G_2*(1 - p_21)*p_12/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 1, node_2 = 2, lag = 2, nobs = NULL) >  0.05 + lambda_1*G_1*G_2*(1 - p_21)*p_12/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 2, node_2 = 1, lag = 2, nobs = NULL) < -0.05 + lambda_2*G_1*G_2*(1 - p_12)*p_21/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 2, node_2 = 1, lag = 2, nobs = NULL) >  0.05 + lambda_2*G_1*G_2*(1 - p_12)*p_21/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 2, node_2 = 2, lag = 2, nobs = NULL) < -0.05 + lambda_2*G_2*(1-G_2)*(1 - p_21)/(1 - p_12*p_21), FALSE)
+  expect_equal(cross_covariance(qn_1, node_1 = 2, node_2 = 2, lag = 2, nobs = NULL) >  0.05 + lambda_2*G_2*(1-G_2)*(1 - p_21)/(1 - p_12*p_21), FALSE)
+  
+})
+
+
+alpha_1_1 = queueingnetworkR:::cross_covariance(qn_1, node_1 = 1, node_2 = 1, lag = 1, nobs = NULL) 
+alpha_2_2 = queueingnetworkR:::cross_covariance(qn_1, node_1 = 1, node_2 = 2, lag = 2, nobs = NULL) 
+
+test_that("Cross-Covariance estimator yields expected result for k = 1", {
+  expect_equal((1-p_12)*alpha_2_2/(alpha_1_1*(1-p_21)*p_12) - G_2 < 0.05, TRUE)
+  expect_equal((1-p_12)*alpha_2_2/(alpha_1_1*(1-p_21)*p_12) - G_2 > -0.05, TRUE)
 })
